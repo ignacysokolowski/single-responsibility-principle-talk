@@ -75,6 +75,13 @@ body {
   -moz-transition: -moz-transform .3s ease-out;
   -webkit-transition: -webkit-transform .3s ease-out;
 }
+.slides > article.no-transition.current,
+.slides > article.before-no-transition.past {
+  transition: none;
+  -o-transition: none;
+  -moz-transition: none;
+  -webkit-transition: none;
+}
 .slides > article.center {
   top: 50%;
   margin-top: -330px;
