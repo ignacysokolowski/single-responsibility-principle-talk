@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Single Responsibility Principle &mdash; Single Responsibility Principle  documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/slides.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    <link rel="top" title="Single Responsibility Principle  documentation" href="#" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide center level-1" id="single-responsibility-principle">
+
+<h1>Single Responsibility Principle</h1>
+
+<p>Ignacy Sokołowski</p>
+<hr class="docutils" />
+
+
+
+
+</article><article class="slide center level-2" id="what-is-the-srp">
+
+<h2>What is the SRP?</h2>
+
+<p>Every class, method, function should be <strong>responsible</strong> for only <strong>one</strong> thing.</p>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="origin">
+
+<h2>Origin</h2>
+
+<p>Robert C. Martin a.k.a. Uncle Bob, <em>Principles of Object Oriented Programming</em></p>
+<p>Part of <strong>SOLID</strong> principles.</p>
+<ul class="simple">
+<li><strong>S</strong>RP – <strong>Single Responsibility Principle</strong></li>
+<li><strong>O</strong>CP – Open/Closed Principle</li>
+<li><strong>L</strong>SP – Liskov Substitution Principle</li>
+<li><strong>I</strong>SP – Interface Segregation Principle</li>
+<li><strong>D</strong>IP – Dependency Inversion Principle</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="real-life-examples">
+
+<h2>Real life examples</h2>
+
+<ul class="build simple">
+<li>A car</li>
+<li>A company</li>
+<li>MVC web frameworks</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="what-is-the-single-responsibility">
+
+<h2>What is the <em>single responsibility</em>?</h2>
+
+<p>What does it mean to be <strong>responsible for only one thing</strong>?</p>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="not-just-doing-only-one-thing">
+
+<h2>Not just <em>doing only one thing</em></h2>
+
+<p>It will always do more than one thing.</p>
+<p>One function can invoke several other functions <br />
+but it will <strong>not</strong> be <strong>responsible</strong> for <strong>how</strong> they are implemented.</p>
+
+
+
+
+</article><hr class="docutils" />
+<article class="before-no-transition slide center level-2" id="one-level-of-abstraction">
+
+<h2>One level of abstraction</h2>
+
+<ul class="simple">
+<li>Send e-mail report<ul>
+<li>Get report data</li>
+<li>Format the report</li>
+<li>Send it via e-mail</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="no-transition slide center level-2" id="id1">
+
+<h2>One level of abstraction</h2>
+
+<ul class="simple">
+<li>Send e-mail report<ul>
+<li>Get report data<ul>
+<li>Build an SQL query</li>
+<li>Send the query to a database</li>
+<li>Parse the results on data objects</li>
+</ul>
+</li>
+<li>Format the report<ul>
+<li>...</li>
+<li>...</li>
+</ul>
+</li>
+<li>Send it via e-mail<ul>
+<li>Build an e-mail message</li>
+<li>Connect to an SMTP server</li>
+<li>Send the message</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id2">
+
+<h2>One level of abstraction</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">send_email_report</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">time_period</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">get_report_data</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">time_period</span><span class="p">)</span>
+    <span class="n">report_body</span> <span class="o">=</span> <span class="n">format_report</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">send_email</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">report_body</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="one-reason-to-change">
+
+<h2>One reason to change</h2>
+
+<p>If you'd like to change the way reports are <strong>formatted</strong>, <br />
+you should not need to change the class responsible for <strong>preparing the report
+data</strong>.</p>
+<p>If you'd like to change the <strong>database</strong> for articles, <br />
+you should not need to change the <strong>controller</strong> for displaying articles.</p>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="advantages">
+
+<h2>Advantages</h2>
+
+<ul class="build simple">
+<li><strong>Readability</strong>. Easier to focus on one responsibility. You name the
+responsibility.</li>
+<li><strong>Maintainability</strong>. Smaller risk to break a thing when changing another one.</li>
+<li><strong>Reusability</strong>. An object can be used in many different contexts.</li>
+<li><strong>Testability</strong>. Easier to test in isolation.</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="testing">
+
+<h2>Testing</h2>
+
+<p>If it does more than one thing, you need to write lots of different tests for
+it.</p>
+<p>Each test executes the whole body. It <strong>takes time</strong>. Or you need to <strong>mock a
+lot</strong>.</p>
+<p><strong>You don't</strong> write sufficent amount of tests simply because it's <strong>too much
+testing</strong>.</p>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smells">
+
+<h2>Code smells</h2>
+
+<ul class="simple">
+<li>Long function/method</li>
+<li>Long name</li>
+<li>Too many methods in a class</li>
+<li>Too many attributes (cohesion)</li>
+<li>Too many indentation levels</li>
+<li>Too many locals</li>
+<li>Hard to unit test in isolation</li>
+<li>Long test</li>
+<li>Object and data structure at the same time</li>
+<li>Sections within functions</li>
+<li>Comments in code</li>
+<li>Mixed languages</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-too-many-locals">
+
+<h2>Code smell: Too many locals</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_signature</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Timestamp/text()&#39;</span><span class="p">)</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">])</span>
+    <span class="n">md5sig</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">b64sig</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">md5sig</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">xml_sig</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Signature/text()&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xml_sig</span> <span class="o">!=</span> <span class="n">b64sig</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SignatureError</span><span class="p">(</span><span class="s">&#39;XML signature is invalid.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-sections-within-functions">
+
+<h2>Code smell: Sections within functions</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_signature</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Timestamp/text()&#39;</span><span class="p">)</span>
+    <span class="n">xml_sig</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Signature/text()&#39;</span><span class="p">)</span>
+
+    <span class="n">sig</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">])</span>
+    <span class="n">md5sig</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">b64sig</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">md5sig</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">xml_sig</span> <span class="o">!=</span> <span class="n">b64sig</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SignatureError</span><span class="p">(</span><span class="s">&#39;XML signature is invalid.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-comments-in-code">
+
+<h2>Code smell: Comments in code</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_signature</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Timestamp/text()&#39;</span><span class="p">)</span>
+    <span class="n">xml_sig</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Signature/text()&#39;</span><span class="p">)</span>
+
+    <span class="c"># Calculate valid signature.</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">])</span>
+    <span class="n">md5sig</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">b64sig</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">md5sig</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">xml_sig</span> <span class="o">!=</span> <span class="n">b64sig</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SignatureError</span><span class="p">(</span><span class="s">&#39;XML signature is invalid.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="extracting-responsibility">
+
+<h2>Extracting responsibility</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">validate_signature</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Timestamp/text()&#39;</span><span class="p">)</span>
+    <span class="n">xml_sig</span> <span class="o">=</span> <span class="n">get_xpath</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s">&#39;./Signature/text()&#39;</span><span class="p">)</span>
+    <span class="n">valid_sig</span> <span class="o">=</span> <span class="n">calculate_valid_signature</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xml_sig</span> <span class="o">!=</span> <span class="n">valid_sig</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SignatureError</span><span class="p">(</span><span class="s">&#39;XML signature is invalid.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_valid_signature</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">developer</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">secret</span><span class="p">])</span>
+    <span class="n">md5sig</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">md5sig</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-mixing-objects-and-data-structures">
+
+<h2>Code smell: Mixing objects and data structures</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c"># [...]</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="n">email_subject</span> <span class="o">=</span> <span class="s">&#39;{} report for {} - {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">category</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+            <span class="n">end_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">offers</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Offer</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span><span class="p">,</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">template_path</span> <span class="o">=</span> <span class="s">&#39;report_{}.html&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_type</span><span class="p">)</span>
+        <span class="n">template_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span>
+            <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+            <span class="s">&#39;offers&#39;</span><span class="p">:</span> <span class="n">offers</span><span class="p">,</span>
+            <span class="s">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span>
+            <span class="s">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">email_body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">template_context</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="n">email_subject</span><span class="p">,</span> <span class="n">email_body</span><span class="p">)</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-long-method">
+
+<h2>Code smell: Long method</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="n">email_subject</span> <span class="o">=</span> <span class="s">&#39;{} report for {} - {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">category</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+            <span class="n">end_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">offers</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Offer</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span><span class="p">,</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">template_path</span> <span class="o">=</span> <span class="s">&#39;report_{}.html&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">report_type</span><span class="p">)</span>
+        <span class="n">template_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+            <span class="s">&#39;offers&#39;</span><span class="p">:</span> <span class="n">offers</span><span class="p">,</span>
+            <span class="s">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span>
+            <span class="s">&#39;end_date&#39;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">email_body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">template_context</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="n">email_subject</span><span class="p">,</span> <span class="n">email_body</span><span class="p">)</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="long-method-refactoring-dto">
+
+<h2>Long method refactoring: DTO</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Report</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">offers</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offers</span> <span class="o">=</span> <span class="n">offers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Period</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} - {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="long-method-refactoring">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ReportPreparator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offers_finder</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offers_finder</span> <span class="o">=</span> <span class="n">offers_finder</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="n">offers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offers_finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Report</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">offers</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id3">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">OffersFinder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Offer</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span><span class="p">,</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">period</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="n">Offer</span><span class="o">.</span><span class="n">when_created</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id4">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_preparator</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span> <span class="o">=</span> <span class="n">report_preparator</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="n">email_subject</span> <span class="o">=</span> <span class="s">&#39;{} report for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">template_path</span> <span class="o">=</span> <span class="s">&#39;report_{}.html&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">report_type</span><span class="p">)</span>
+        <span class="n">template_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+            <span class="s">&#39;offers&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">offers</span><span class="p">,</span>
+            <span class="s">&#39;period&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">period</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">email_body</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">template_context</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="n">email_subject</span><span class="p">,</span> <span class="n">email_body</span><span class="p">)</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id5">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">HTMLReportFormatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">):</span>
+        <span class="n">template_path</span> <span class="o">=</span> <span class="s">&#39;report_{}.html&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">report_type</span><span class="p">)</span>
+        <span class="n">template_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+            <span class="s">&#39;offers&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">offers</span><span class="p">,</span>
+            <span class="s">&#39;period&#39;</span><span class="p">:</span> <span class="n">report</span><span class="o">.</span><span class="n">period</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">template_context</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id6">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_preparator</span><span class="p">,</span> <span class="n">report_formatter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span> <span class="o">=</span> <span class="n">report_preparator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_formatter</span> <span class="o">=</span> <span class="n">report_formatter</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="n">email_subject</span> <span class="o">=</span> <span class="s">&#39;{} report for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">email_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_formatter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="n">email_subject</span><span class="p">,</span> <span class="n">email_body</span><span class="p">)</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id7">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ReportEmailPreparator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_formatter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_formatter</span> <span class="o">=</span> <span class="n">report_formatter</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">):</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_subject</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_formatter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">email</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_prepare_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} report for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id8">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_preparator</span><span class="p">,</span> <span class="n">report_email_preparator</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span> <span class="o">=</span> <span class="n">report_preparator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_email_preparator</span> <span class="o">=</span> <span class="n">report_email_preparator</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_email_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="id9">
+
+<h2>Long method refactoring</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailSender</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smtp_uri</span><span class="p">,</span> <span class="n">sender_address</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_smtp_uri</span> <span class="o">=</span> <span class="n">smtp_uri</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sender_address</span> <span class="o">=</span> <span class="n">sender_address</span>
+
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_smtp_uri</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sender_address</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="long-method-refactored">
+
+<h2>Long method refactored</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailReporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_preparator</span><span class="p">,</span> <span class="n">report_email_preparator</span><span class="p">,</span> <span class="n">email_sender</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span> <span class="o">=</span> <span class="n">report_preparator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_email_preparator</span> <span class="o">=</span> <span class="n">report_email_preparator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_email_sender</span> <span class="o">=</span> <span class="n">email_sender</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+        <span class="n">email_message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_email_preparator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_email_sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">email_message</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article><article class="slide center level-2" id="splitting-long-methods-into-smaller-classes">
+
+<h2>Splitting long methods into smaller classes</h2>
+
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">User</span></code></li>
+<li><code class="docutils literal"><span class="pre">Report</span></code></li>
+<li><code class="docutils literal"><span class="pre">Period</span></code></li>
+<li><code class="docutils literal"><span class="pre">EmailReporter</span></code></li>
+<li><code class="docutils literal"><span class="pre">ReportPreparator</span></code></li>
+<li><code class="docutils literal"><span class="pre">OffersFinder</span></code></li>
+<li><code class="docutils literal"><span class="pre">HTMLReportFormatter</span></code></li>
+<li><code class="docutils literal"><span class="pre">ReportEmailPreparator</span></code></li>
+<li><code class="docutils literal"><span class="pre">EmailSender</span></code></li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-too-many-methods-in-a-class">
+
+<h2>Code smell: Too many methods in a class</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c"># [...]</span>
+
+    <span class="k">def</span> <span class="nf">send_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">prepare_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">make_report_email_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">make_report_email_message_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">make_report_email_message_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">render_report_email_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_report_email_template_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_report_email_template_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_offers_for_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_offers_search_query_for_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="c"># [...]</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-too-many-indentation-levels">
+
+<h2>Code smell: Too many indentation levels</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">write_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;strict&#39;</span><span class="p">,</span>
+                <span class="n">linesep</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s">&#39;ab&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s">&#39;wb&#39;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">isUnicode</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">linesep</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># Strip off any existing line-end and add the</span>
+                <span class="c"># specified linesep string.</span>
+                <span class="k">if</span> <span class="n">isUnicode</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">u&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">u&#39;</span><span class="se">\x0d\x85</span><span class="s">&#39;</span><span class="p">):</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">u&#39;</span><span class="se">\r</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">u&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span>
+                                       <span class="s">u&#39;</span><span class="se">\x85</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">u&#39;</span><span class="se">\u2028</span><span class="s">&#39;</span><span class="p">):</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">):</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">line</span> <span class="o">+=</span> <span class="n">linesep</span>
+            <span class="k">if</span> <span class="n">isUnicode</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">encoding</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">getdefaultencoding</span><span class="p">()</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="code-smell-mixed-languages">
+
+<h2>Code smell: Mixed languages</h2>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">article_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">article_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">article</span> <span class="o">=</span> <span class="n">get_article</span><span class="p">(</span><span class="n">article_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s">&#39;&lt;html&gt;&lt;head&gt;&lt;title&gt;{article.title}&lt;/title&gt;&lt;/head&gt;&#39;</span>
+        <span class="s">&#39;&lt;body&gt;&lt;h1&gt;{article.title}&lt;/h1&gt;{article.content}&lt;/body&gt;&lt;/html&gt;&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">article</span><span class="o">=</span><span class="n">article</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">article_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">article_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">article</span> <span class="o">=</span> <span class="n">get_article</span><span class="p">(</span><span class="n">article_id</span><span class="p">)</span>
+    <span class="n">css_class</span> <span class="o">=</span> <span class="s">&#39;new&#39;</span> <span class="k">if</span> <span class="n">article</span><span class="o">.</span><span class="n">is_new</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;article&#39;</span><span class="p">:</span> <span class="n">article</span><span class="p">,</span> <span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="n">css_class</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;article.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">article_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">article_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">article</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s">&#39;SELECT * FROM articles WHERE id = </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">article_id</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;article.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;article&#39;</span><span class="p">:</span> <span class="n">article</span><span class="p">})</span>
+</pre></div>
+</div>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="summary">
+
+<h2>Summary</h2>
+
+<ul class="simple">
+<li>Split responsibility into multiple classes/functions/methods</li>
+<li>Hide lower level in a private method if it really belongs to the class</li>
+<li>Extract data structures into separate classes (DTO)</li>
+<li>Use dependency injection</li>
+</ul>
+
+
+
+
+</article><hr class="docutils" />
+<article class="slide center level-2" id="thank-you">
+
+<h2>Thank you</h2>
+
+<ul class="simple">
+<li>Twitter: <a class="reference external" href="https://twitter.com/ignacy">&#64;ignacy</a></li>
+<li>Github: <a class="reference external" href="https://github.com/ignacysokolowski">ignacysokolowski</a></li>
+<li>E-mail: <a class="reference external" href="mailto:ignacy&#46;sokolowski&#37;&#52;&#48;gmail&#46;com">ignacy<span>&#46;</span>sokolowski<span>&#64;</span>gmail<span>&#46;</span>com</a></li>
+</ul>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
