@@ -4,9 +4,11 @@ Single Responsibility Principle
 
 Slides from my talk on the Single Responsibility Principle.
 
+http://ignacysokolowski.github.io/single-responsibility-principle-talk
 
-Installation
-============
+
+Building the slides
+===================
 
 Install `Sphinx <http://sphinx-doc.org>`_ and
 `Hieroglyph <http://docs.hieroglyph.io/en/latest/index.html>`_::
